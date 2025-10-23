@@ -43,7 +43,16 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           _currentLocation = LatLng(position.latitude, position.longitude);
         });
-        _mapController.move(_currentLocation, 15);
+        // Guard map controller usage in case the widget was disposed or the
+        // internal controller has been released. This avoids "used after
+        // disposed" exceptions on some platforms.
+        try {
+          if (mounted) {
+            _mapController.move(_currentLocation, 15);
+          }
+        } catch (e) {
+          debugPrint('Map controller move error (ignored): $e');
+        }
       }
     } catch (e) {
       debugPrint('Error getting location: $e');
@@ -120,51 +129,55 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Container(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppTheme.lightGray,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Icon(Icons.arrow_back_ios_new, size: 18),
+              ),
+            ),
+            const SizedBox(width: 12),
+            const Icon(Icons.location_on_outlined, size: 20),
+            const SizedBox(width: 8),
+            const Text(
+              'Plan Route',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(width: 8),
+            _buildActivityTypeButton(AppTheme.primaryOrange),
+            const SizedBox(width: 8),
+            _buildActivityTypeButton(AppTheme.secondaryBlue),
+            const SizedBox(width: 8),
+            _buildActivityTypeButton(AppTheme.accentGreen),
+            const SizedBox(width: 8),
+            _buildActivityTypeButton(AppTheme.accentRed),
+            const SizedBox(width: 8),
+            _buildActivityTypeButton(AppTheme.accentPurple),
+            const SizedBox(width: 8),
+            Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: AppTheme.lightGray,
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: const Icon(Icons.arrow_back_ios_new, size: 18),
+              child: const Icon(Icons.history, size: 20),
             ),
-          ),
-          const SizedBox(width: 12),
-          const Icon(Icons.location_on_outlined, size: 20),
-          const SizedBox(width: 8),
-          const Text(
-            'Plan Route',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const Spacer(),
-          _buildActivityTypeButton(AppTheme.primaryOrange),
-          const SizedBox(width: 8),
-          _buildActivityTypeButton(AppTheme.secondaryBlue),
-          const SizedBox(width: 8),
-          _buildActivityTypeButton(AppTheme.accentGreen),
-          const SizedBox(width: 8),
-          _buildActivityTypeButton(AppTheme.accentRed),
-          const SizedBox(width: 8),
-          _buildActivityTypeButton(AppTheme.accentPurple),
-          const SizedBox(width: 8),
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: AppTheme.lightGray,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Icon(Icons.history, size: 20),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
