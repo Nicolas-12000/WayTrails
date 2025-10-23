@@ -45,5 +45,22 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+    
+	<!-- Location Permissions -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>WayTrails necesita acceso a tu ubicación para registrar tus rutas mientras usas la app.</string>
+    
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>WayTrails necesita acceso a tu ubicación para registrar tus rutas incluso cuando la app está en segundo plano.</string>
+    
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>WayTrails necesita acceso continuo a tu ubicación para registrar tus rutas de manera precisa.</string>
+    
+	<!-- Background Modes -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+		<string>fetch</string>
+	</array>
 </dict>
 </plist>
